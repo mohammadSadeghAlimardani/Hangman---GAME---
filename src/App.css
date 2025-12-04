@@ -69,11 +69,11 @@ main {
     margin-bottom: 1.5rem;
     font-family: "MeriendaOne-Regular";
 }
-.word-container h3.count-correct-words {
+.word-container h3.count-correct-letters {
     margin-bottom: 1.5rem;
     color: white;
 }
-.word-container h3.count-correct-words span {
+.word-container h3.count-correct-letters span {
     color: var(--danger-500);
 }
 .word-container h3.count-guesses {

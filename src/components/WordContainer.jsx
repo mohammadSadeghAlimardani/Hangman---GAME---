@@ -93,8 +93,8 @@ const WordContainer = (props) => {
                 })}
             </div>
             <p className="word-description">{wordDescription}</p>
-            <h3 className="count-correct-words">
-                correct words :{" "}
+            <h3 className="count-correct-letters">
+                correct letters :{" "}
                 <span>
                     {countCorrectLetters}/{blanksArray.length}
                 </span>
