@@ -72,7 +72,7 @@ const App = () => {
             <div className="alert alert-danger">
                 <div className="alert-icon">&#10799;</div>
                 <p>
-                    an Error Happend During Geeting Word, Please Refresh The
+                    an Error Happend During Fetching Word, Please Refresh The
                     Page
                 </p>
             </div>
