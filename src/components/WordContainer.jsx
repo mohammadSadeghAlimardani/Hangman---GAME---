@@ -35,7 +35,7 @@ const WordContainer = (props) => {
     const [countCorrectLetters, setCountCorrectLetters] = useState(0);
     const [countGuesses, setCountGuesses] = useState(0);
     const [foundedLetters, setFoundedLetters] = useState([]);
-    const [isChecking, setIsChecking] = useState(true);
+    const [isChecking, setIsChecking] = useState(false);
 
     const {
         word,
