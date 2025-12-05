@@ -6,6 +6,7 @@ import Loading from "./components/Loading";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Modal from "./components/Modal";
+import { toast, ToastContainer } from "react-toastify";
 
 const getImageAPI =
     "https://pixabay.com/api/?key=53548487-e0c2ccd68c6363fc05f6edab1";
@@ -20,7 +21,7 @@ const App = () => {
     const [wordInfo, setWordInfo] = useState("");
     const [searchValue, setSearchValue] = useState("");
     const [isOpenModal, setIsOpenModal] = useState(false);
-    const [error, setError] = useState("");
+    const [isGiveup, setIsGiveup] = useState("null");
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ["word"],
@@ -39,10 +40,14 @@ const App = () => {
                 const randomNumber = Math.floor(
                     Math.random() * response.data.hits.length
                 );
-                setImage(response.data.hits[randomNumber]);
+                if (!response.data.hits[randomNumber]) {
+                    setImage(404);
+                } else {
+                    setImage(response.data.hits[randomNumber]);
+                }
             }
         } catch (error) {
-            setError(true);
+            console.log(error);
         }
     };
 
@@ -51,7 +56,7 @@ const App = () => {
             const response = await axios.get(`${wordInfoAPI}${word}`);
             setWordInfo(response.data);
         } catch (error) {
-            setError(true);
+            toast.warning("No definition Found!");
         }
     };
 
@@ -67,7 +72,7 @@ const App = () => {
         return <Loading />;
     }
 
-    if (isError || error) {
+    if (isError) {
         return (
             <div className="alert alert-danger">
                 <div className="alert-icon">&#10799;</div>
@@ -81,15 +86,17 @@ const App = () => {
 
     return (
         <main className="game">
-            <Modal isOpenModal={isOpenModal} />
+            <ToastContainer position="top-center" />
+            <Modal isOpenModal={isOpenModal} isGiveup={isGiveup} word={word} />
             <div className="section-center game-center column column-2">
-                <ImageContainer image={image} word={word} />
+                <ImageContainer image={image} />
                 <WordContainer
                     word={word}
                     wordInfo={wordInfo}
                     searchValue={searchValue}
                     setSearchValue={setSearchValue}
                     setIsOpenModal={setIsOpenModal}
+                    setIsGiveup={setIsGiveup}
                 />
             </div>
         </main>

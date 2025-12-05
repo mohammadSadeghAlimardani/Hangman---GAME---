@@ -34,17 +34,41 @@ const WordContainer = (props) => {
     const [countCorrectLetters, setCountCorrectLetters] = useState(0);
     const [countGuesses, setCountGuesses] = useState(0);
     const [foundedLetters, setFoundedLetters] = useState([]);
+    const [isChecking, setIsChecking] = useState(false);
 
-    const { word, wordInfo, searchValue, setSearchValue, setIsOpenModal } =
-        props;
+    const {
+        word,
+        wordInfo,
+        searchValue,
+        setSearchValue,
+        setIsOpenModal,
+        setIsGiveup,
+    } = props;
 
-    const wordDescription =
-        wordInfo[0]?.meanings[0]?.definitions[0]?.definition;
+    const wordDefinition = wordInfo[0]?.meanings[0]?.definitions[0]?.definition;
 
     const blanksArray = new Array(word.length).fill(" ");
 
     const [blanksDOM, setBlanksDOM] = useState([" "]);
     const [index, setIndex] = useState(0);
+
+    const addLetters = ({ letter }) => {
+        setSearchValue(searchValue + letter);
+        if (blanksDOM[index] === " ") {
+            blanksDOM[index] = letter;
+        } else {
+            let nextIndex = index + 1;
+            while (nextIndex < blanksDOM.length) {
+                if (blanksDOM[nextIndex] === " ") {
+                    blanksDOM[nextIndex] = letter;
+                    break;
+                }
+                nextIndex++;
+            }
+        }
+        setIndex(index + 1);
+        setBlanksDOM(blanksDOM);
+    };
 
     useEffect(() => {
         if (blanksArray.length > 0) {
@@ -54,45 +78,63 @@ const WordContainer = (props) => {
 
     useEffect(() => {
         if (blanksDOM.every((blank) => blank !== " ")) {
-            setCountGuesses(countGuesses + 1);
-            if (blanksDOM.join("") === word) {
-                setIsOpenModal(true);
-                setCountCorrectLetters(word.length);
-            } else {
-                const wordArray = [...word];
-                const newBlanks = blanksDOM.map((blank, i) => {
-                    if (blank !== wordArray[i]) {
-                        return " ";
-                    } else {
-                        return blank;
-                    }
-                });
-                setCountCorrectLetters(
-                    newBlanks.filter((blank) => blank !== " ").length
-                );
-                setBlanksDOM(newBlanks);
-                setFoundedLetters(newBlanks.filter((blank) => blank !== " "));
-                setIndex(0);
-                setSearchValue("");
-            }
+            //just for delay
+            setTimeout(() => {
+                setIsChecking(true);
+            }, 350);
+            setTimeout(() => {
+                setCountGuesses(countGuesses + 1);
+                if (blanksDOM.join("") === word) {
+                    setIsOpenModal(true);
+                    setCountCorrectLetters(word.length);
+                    setIsGiveup(false);
+                } else {
+                    const wordArray = [...word];
+                    const newBlanks = blanksDOM.map((blank, i) => {
+                        if (blank !== wordArray[i]) {
+                            return " ";
+                        } else {
+                            return blank;
+                        }
+                    });
+                    setCountCorrectLetters(
+                        newBlanks.filter((blank) => blank !== " ").length
+                    );
+                    setBlanksDOM(newBlanks);
+                    setFoundedLetters(
+                        newBlanks.filter((blank) => blank !== " ")
+                    );
+                    setIndex(0);
+                    setSearchValue("");
+                }
+                setIsChecking(false);
+            }, 1750);
         }
     }, [searchValue]);
 
     return (
         <article className="word-container">
-            <div className="blanks-container">
-                {blanksDOM.map((blank) => {
-                    return (
-                        <div
-                            className={blank === " " ? "blank" : "founded"}
-                            key={nanoid()}
-                        >
-                            {blank}
-                        </div>
-                    );
-                })}
-            </div>
-            <p className="word-description">{wordDescription}</p>
+            {isChecking ? (
+                <div className="checking">
+                    <p>Checking </p> <span className="dot-1">.</span>{" "}
+                    <span className="dot-2">.</span>{" "}
+                    <span className="dot-3">.</span>
+                </div>
+            ) : (
+                <div className="blanks-container">
+                    {blanksDOM.map((blank) => {
+                        return (
+                            <div
+                                className={blank === " " ? "blank" : "founded"}
+                                key={nanoid()}
+                            >
+                                {blank}
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
+            <p className="word-definition">{wordDefinition}</p>
             <h3 className="count-correct-letters">
                 correct letters :{" "}
                 <span>
@@ -104,23 +146,7 @@ const WordContainer = (props) => {
                 {letters.map((letter) => {
                     return (
                         <button
-                            onClick={(event) => {
-                                setSearchValue(searchValue + letter);
-                                if (blanksDOM[index] === " ") {
-                                    blanksDOM[index] = letter;
-                                } else {
-                                    let nextIndex = index + 1;
-                                    while (nextIndex < blanksDOM.length) {
-                                        if (blanksDOM[nextIndex] === " ") {
-                                            blanksDOM[nextIndex] = letter;
-                                            break;
-                                        }
-                                        nextIndex++;
-                                    }
-                                }
-                                setIndex(index + 1);
-                                setBlanksDOM(blanksDOM);
-                            }}
+                            onClick={(event) => addLetters({ letter })}
                             className={
                                 foundedLetters.includes(letter)
                                     ? "btn letter founded-letter"
@@ -133,6 +159,15 @@ const WordContainer = (props) => {
                     );
                 })}
             </div>
+            <button
+                className="btn giveup"
+                onClick={(event) => {
+                    setIsGiveup(true);
+                    setIsOpenModal(true);
+                }}
+            >
+                give up
+            </button>
         </article>
     );
 };
