@@ -39,10 +39,10 @@ main {
 }
 .word-container .checking {
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.05rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.25rem;
     margin-bottom: 2rem;
     font-weight: bold;
 }
@@ -63,10 +63,10 @@ main {
         transform: scale(0);
     }
     25% {
-        transform: scale(1);
+        transform: scale(0.7);
     }
     100% {
-        transform: scale(1);
+        transform: scale(0.7);
     }
 }
 @keyframes show_hide_dot_2 {
@@ -74,10 +74,10 @@ main {
         transform: scale(0);
     }
     50% {
-        transform: scale(1);
+        transform: scale(0.7);
     }
     100% {
-        transform: scale(1);
+        transform: scale(0.7);
     }
 }
 @keyframes show_hide_dot_3 {
@@ -85,10 +85,10 @@ main {
         transform: scale(0);
     }
     75% {
-        transform: scale(1);
+        transform: scale(0.7);
     }
     100% {
-        transform: scale(1);
+        transform: scale(0.7);
     }
 }
 .word-container .blanks-container {

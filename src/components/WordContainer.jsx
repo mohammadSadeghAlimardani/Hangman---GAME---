@@ -1,5 +1,6 @@
 import { nanoid } from "nanoid";
 import { memo, useEffect, useState } from "react";
+import { GoDotFill } from "react-icons/go";
 
 const letters = [
     "a",
@@ -34,7 +35,7 @@ const WordContainer = (props) => {
     const [countCorrectLetters, setCountCorrectLetters] = useState(0);
     const [countGuesses, setCountGuesses] = useState(0);
     const [foundedLetters, setFoundedLetters] = useState([]);
-    const [isChecking, setIsChecking] = useState(false);
+    const [isChecking, setIsChecking] = useState(true);
 
     const {
         word,
@@ -116,9 +117,16 @@ const WordContainer = (props) => {
         <article className="word-container">
             {isChecking ? (
                 <div className="checking">
-                    <p>Checking </p> <span className="dot-1">.</span>{" "}
-                    <span className="dot-2">.</span>{" "}
-                    <span className="dot-3">.</span>
+                    <p>Checking </p>{" "}
+                    <span className="dot-1">
+                        <GoDotFill />
+                    </span>{" "}
+                    <span className="dot-2">
+                        <GoDotFill />
+                    </span>{" "}
+                    <span className="dot-3">
+                        <GoDotFill />
+                    </span>
                 </div>
             ) : (
                 <div className="blanks-container">
