@@ -46,8 +46,7 @@ const WordContainer = (props) => {
         setIsGiveup,
     } = props;
 
-    const wordDefinition = wordInfo[0]?.meanings[0]?.definitions[0]?.definition;
-
+    const wordDefinition = wordInfo?.entries?.[0]?.senses?.[0]?.definition;
     const blanksArray = new Array(word.length).fill(" ");
 
     const [blanksDOM, setBlanksDOM] = useState([" "]);
@@ -99,11 +98,11 @@ const WordContainer = (props) => {
                         }
                     });
                     setCountCorrectLetters(
-                        newBlanks.filter((blank) => blank !== " ").length
+                        newBlanks.filter((blank) => blank !== " ").length,
                     );
                     setBlanksDOM(newBlanks);
                     setFoundedLetters(
-                        newBlanks.filter((blank) => blank !== " ")
+                        newBlanks.filter((blank) => blank !== " "),
                     );
                     setIndex(0);
                     setSearchValue("");

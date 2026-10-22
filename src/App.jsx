@@ -11,9 +11,9 @@ import { toast, ToastContainer } from "react-toastify";
 const getImageAPI =
     "https://pixabay.com/api/?key=53548487-e0c2ccd68c6363fc05f6edab1";
 
-const getWordAPI = "https://random-word-api.vercel.app/api?words=1";
+const getWordAPI = "https://random-word-api.herokuapp.com/word";
 
-const wordInfoAPI = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+const wordInfoAPI = "https://freedictionaryapi.com/api/v1/entries/en/";
 
 const App = () => {
     const [image, setImage] = useState("");
@@ -34,11 +34,11 @@ const App = () => {
     const fetchImage = async (word) => {
         try {
             const response = await axios.get(
-                `${getImageAPI}&q=${word}&image_type=photo&pretty=true`
+                `${getImageAPI}&q=${word}&image_type=photo&pretty=true`,
             );
             if (response) {
                 const randomNumber = Math.floor(
-                    Math.random() * response.data.hits.length
+                    Math.random() * response.data.hits.length,
                 );
                 if (!response.data.hits[randomNumber]) {
                     setImage(404);
